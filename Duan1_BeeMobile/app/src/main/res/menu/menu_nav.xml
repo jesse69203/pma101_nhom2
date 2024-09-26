@@ -18,6 +18,10 @@
             android:id="@+id/QLHANG"
 
             android:title="Quản lý hãng " />
+        <item
+            android:id="@+id/QL_Voucher"
+
+            android:title="Quản lý Voucher " />
 
         <item
             android:id="@+id/QLSP"
@@ -59,6 +63,10 @@
         <item android:title="Tiện ích"
             >
             <menu>
+                <item
+                    android:id="@+id/thongTin"
+
+                    android:title="Thông tin" />
                 <item
                     android:id="@+id/itDoiMatKhau"
 

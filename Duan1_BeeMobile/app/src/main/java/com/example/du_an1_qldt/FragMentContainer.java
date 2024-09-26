@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -55,6 +57,44 @@ public class FragMentContainer extends AppCompatActivity implements NavigationVi
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(FragMentContainer.this, drawer, toolbar, 0, 0);
         drawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("thongtin", MODE_PRIVATE);
+        String loaitaikhoan = sharedPreferences.getString("loaitaikhoan", "");
+
+        if (!loaitaikhoan.equals("admin")){
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.QL_Voucher).setVisible(false);
+            menu.findItem(R.id.QLSP).setVisible(false);
+            menu.findItem(R.id.QLKH).setVisible(false);
+            menu.findItem(R.id.manChinhAdmin).setVisible(false);
+            menu.findItem(R.id.QLHANG).setVisible(false);
+            menu.findItem(R.id.QLHD).setVisible(false);
+            menu.findItem(R.id.ThongKeDoanhThu).setVisible(false);
+            menu.findItem(R.id.ThongKeTop).setVisible(false);
+        }else {
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.manChinhNguoiDung).setVisible(false);
+            menu.findItem(R.id.QLDM).setVisible(false);
+            menu.findItem(R.id.GIOHANG).setVisible(false);
+
+        }
+
+
+//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//
+//                Fragment fr;
+//                if (item.getItemId()==R.id.QL_Voucher){
+//
+//                    fr=new Frag_QuanLiVoucher();
+//                }else {
+//                    fr=new Frag_QuanLiSanPham();
+//                }
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer,fr).commit();
+//                return true;
+//            }
+//        });
 
     }
 
