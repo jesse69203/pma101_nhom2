@@ -34,7 +34,7 @@ public class OrderDAO {
                 order.setIdUser(c.getInt(1));
                 order.setId(c.getInt(0));
                 order.setDateOrder(c.getString(2));
-                order.setStatusOrder(c.getString(3));
+                order.setStatusOrder(c.getInt(3));
                 list.add(order);
             } while (c.moveToNext());
         }
@@ -79,7 +79,6 @@ public class OrderDAO {
     public void deleteOrderDetailsByOrderId(int orderId) {
         SQLiteDatabase db = myDbHelper.getWritableDatabase();
         db.delete("OderDetail", "idDonHang=?", new String[]{String.valueOf(orderId)});
-        db.close();
     }
 
     public int updateOrder(Order order) {
@@ -90,19 +89,31 @@ public class OrderDAO {
         return check;
     }
 
-    public ArrayList<OrderDetail> getlistOrderDetail() {
+    public ArrayList<OrderDetail> getlistOrderDetail(int orderId) {
         ArrayList<OrderDetail> list = new ArrayList<>();
-        Cursor c = db.rawQuery("select * from OderDetail", null, null);
+        Cursor c = db.rawQuery("select * from OderDetail where idDonHang=?", new String[]{String.valueOf(orderId)});
         if (c.getCount() > 0) {
             c.moveToFirst();
             do {
                 OrderDetail order = new OrderDetail();
-                order.setId(c.getInt(2));
+                order.setId(c.getInt(0));
+                order.setIdDonHang(c.getInt(2));
                 order.setIdProduct(c.getInt(1));
                 order.setQuantity(c.getInt(3));
                 order.setPrice(c.getInt(4));
                 list.add(order);
             } while (c.moveToNext());
+
+
+//            String db_order_detail = "CREATE TABLE OderDetail (" +
+//                    "id integer PRIMARY KEY AUTOINCREMENT, " +
+//                    "idSp integer NOT NULL, " +
+//                    "idDonHang integer NOT NULL, " +
+//                    "soLuong integer NOT NULL," +
+//                    "giaTien integer NOT NULL," +
+//                    "FOREIGN KEY (idSp) REFERENCES Phone(maDt)," +
+//                    "FOREIGN KEY (idDonHang) REFERENCES Oder(id))";
+//            sqLiteDatabase.execSQL(db_order_detail);
         }
         return list;
     }
@@ -110,18 +121,17 @@ public class OrderDAO {
     public ArrayList<Order> getConfirmedOrders() {
         ArrayList<Order> confirmedOrders = new ArrayList<>();
         SQLiteDatabase db = myDbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Oder WHERE status = 'Đã xác nhận'", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM Oder WHERE status = 1", null);
         if (cursor.moveToFirst()) {
             do {
                 Order order = new Order();
                 order.setIdUser(cursor.getInt(1));
                 order.setId(cursor.getInt(0));
                 order.setDateOrder(cursor.getString(2));
-                order.setStatusOrder(cursor.getString(3));
+                order.setStatusOrder(cursor.getInt(3));
                 confirmedOrders.add(order);
             } while (cursor.moveToNext());
         }
-        cursor.close();
         return confirmedOrders;
     }
 }
