@@ -43,9 +43,14 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.SanPhamV
     ArrayList<phone> listSP;
     Spinner spn_hangDT;
     dbHelper dbHelper1;
+    SanPhamDAO sanPhamDAO11;
     SanPhamAdapter sanPhamAdapter1;
 
-
+    public SanPhamAdapter(Context context, ArrayList<phone> listSP, SanPhamDAO sanPhamDAO11) {
+        this.context = context;
+        this.listSP = listSP;
+        this.sanPhamDAO11 = sanPhamDAO11;
+    }
 
     public SanPhamAdapter(Context context, ArrayList<phone> listSP) {
         this.context = context;
@@ -63,7 +68,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.SanPhamV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SanPhamViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SanPhamViewHolder holder, @SuppressLint("RecyclerView") int position) {
         SanPhamDAO sanPhamDAO = new SanPhamDAO(context);
         listSP = sanPhamDAO.getlistSP();
         dbHelper1 = new dbHelper(context);
@@ -227,6 +232,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.SanPhamV
                                                listSP.clear();
                                                listSP.addAll(sanPhamDAO.getlistSP());
                                                notifyDataSetChanged();
+
                                                Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
 
                                                dialog.dismiss();
@@ -257,6 +263,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.SanPhamV
                                listSP.remove(phoneDTO);
 
                                notifyDataSetChanged();
+
                                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
                            }else {
                                Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
@@ -315,5 +322,6 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.SanPhamV
         cursor.close();
         return tenLoaiSanPham;
     }
+
 
 }

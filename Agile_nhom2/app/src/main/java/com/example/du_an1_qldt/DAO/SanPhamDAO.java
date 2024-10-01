@@ -1,6 +1,7 @@
 package com.example.du_an1_qldt.DAO;
 
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -115,4 +116,90 @@ public class SanPhamDAO {
         return db.delete("Phone","maDt=?",dk);
 
     }
+    public String getProductNameById(int productId) {
+        SQLiteDatabase db = myDbHelper.getReadableDatabase();
+
+        String productName = null;
+        Cursor cursor = null;
+
+        try {
+            // Truy vấn cơ sở dữ liệu để lấy tên sản phẩm dựa trên id
+            cursor = db.query("Phone", new String[]{"tenDt"}, "maDt=?", new String[]{String.valueOf(productId)}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                productName = cursor.getString(0);
+            }
+        } finally {
+            // Đảm bảo đóng con trỏ và cơ sở dữ liệu
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        return productName;
+    }
+
+    @SuppressLint("Range")
+    public ArrayList<phone> TimKiemSanPham(String ten) {
+        dbHelper database = new dbHelper(context);
+        SQLiteDatabase sqLite = database.getWritableDatabase();
+        ArrayList<phone> list = new ArrayList<>();
+
+//
+//        String db_phone="create table Phone(maDt integer primary key autoincrement," +
+//                "tenDt text," +
+//                "idHang integer not null," +
+//                "gia integer," +
+//                "image integer," +
+//                "rom integer," +
+//                "mausac text," +
+//                "trangthai int," +
+//                "soluong integer,"+
+//                "FOREIGN KEY (idHang) REFERENCES Brand(idHang))";
+        Cursor cursor = sqLite.rawQuery("SELECT  * FROM Phone  WHERE tenDt LIKE '%" + ten + "%' ", null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            do {
+                phone sanPham = new phone();
+                sanPham.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex("maDt"))));
+                sanPham.setColor(String.valueOf(cursor.getColumnIndex("mausac")));
+                sanPham.setName(cursor.getString(cursor.getColumnIndex("tenDt")));
+
+                sanPham.setSoLuong(Integer.parseInt(cursor.getString(cursor.getColumnIndex("soluong"))));
+                sanPham.setId_Hang(Integer.parseInt(cursor.getString(cursor.getColumnIndex("idHang"))));
+                sanPham.setStatus(Integer.parseInt(cursor.getString(cursor.getColumnIndex("trangthai"))));
+                sanPham.setRom(Integer.parseInt(cursor.getString(cursor.getColumnIndex("rom"))));
+                sanPham.setImage(Integer.parseInt(cursor.getString(cursor.getColumnIndex("image"))));
+
+
+                list.add(sanPham);
+
+            }
+            while (cursor.moveToNext());
+        }
+        return list;
+    }
+    public int getProductQuantityFromDatabase(int productId) {
+        SQLiteDatabase db = myDbHelper.getReadableDatabase();
+        Cursor cursor = db.query("Phone", new String[]{"soluong"},
+                "maDt=?", new String[]{String.valueOf(productId)},
+                null, null, null, null);
+        int quantity = 0;
+        if (cursor != null && cursor.moveToFirst()) {
+            quantity = cursor.getInt(8);
+            cursor.close();
+        }
+        return quantity;
+    }
+
+    // Method to update product quantity in database
+    public void updateProductQuantityInDatabase(int productId, int updatedQuantity) {
+        SQLiteDatabase db = myDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("soluong", updatedQuantity);
+        db.update("Phone", values, "maDt=?",
+                new String[]{String.valueOf(productId)});
+        db.close();
+    }
+
 }

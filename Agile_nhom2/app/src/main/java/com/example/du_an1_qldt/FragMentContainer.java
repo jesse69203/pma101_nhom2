@@ -12,7 +12,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,12 +40,48 @@ public class FragMentContainer extends AppCompatActivity implements NavigationVi
         navigationView = findViewById(R.id.nav);
         bottomNavigationView = findViewById(R.id.bottom_admin);
         fragmentContainerView = findViewById(R.id.fragMentContainer);
+        SharedPreferences sharedPreferences = getSharedPreferences("thongtin", MODE_PRIVATE);
+        String loaitaikhoan = sharedPreferences.getString("loaitaikhoan", "");
+        if (!loaitaikhoan.equals("admin")){
+            Menu menu = bottomNavigationView.getMenu();
+            menu.findItem(R.id.work).setVisible(false);
+
+        }else {
+            Menu menu = bottomNavigationView.getMenu();
+            menu.findItem(R.id.donMua).setVisible(false);
+        }
+
+        navigationView.setItemIconTintList(null);
+        navigationView.setItemTextColor(ColorStateList.valueOf(Color.BLACK));
+        navigationView.setItemIconSize(80);
+
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                drawer.closeDrawer(GravityCompat.START);
+                Fragment fragment1=null;
+             if (item.getItemId()==R.id.home){
+                 setTitle("Màn hình chính");
+                 toolbar.setTitle("Trang chủ(admin)");
+                 getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer, new TrangChuAdmin()).addToBackStack(null).commit();
+             } else if (item.getItemId()==R.id.work) {
+                 setTitle("Quản lí Hóa đơn");
+                 toolbar.setTitle("Quản lí Hóa đơn");
+                 getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer, new Frag_QuanLiDonHang()).addToBackStack(null).commit();
+             } else if (item.getItemId()==R.id.donMua) {
+                 setTitle("Giỏ hàng");
+                 toolbar.setTitle("Giỏ hàng");
+                 getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer,new Frag_GioHang()).addToBackStack(null).commit();
+             } else if (item.getItemId()==R.id.info) {
+                 setTitle("Màn hình chính");
+                 toolbar.setTitle("Trang chủ(admin)");
+                 getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer, new TrangChuAdmin()).addToBackStack(null).commit();
+
+             }
+             drawer.close();
+
+
                 return false;
             }
         });
@@ -59,14 +97,14 @@ public class FragMentContainer extends AppCompatActivity implements NavigationVi
         drawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("thongtin", MODE_PRIVATE);
-        String loaitaikhoan = sharedPreferences.getString("loaitaikhoan", "");
+
 
         if (loaitaikhoan.equals("admin")){
             Menu menu = navigationView.getMenu();
             menu.findItem(R.id.QLDM).setVisible(false);
             menu.findItem(R.id.manChinhUser).setVisible(false);
             menu.findItem(R.id.GIOHANG).setVisible(false);
+            menu.findItem(R.id.dsVoucher).setVisible(false);
             menu.findItem(R.id.dsSanPham).setVisible(false);
             repLaceFragment(TrangChuAdmin.newInstance());
             getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer, new TrangChuAdmin()).commit();
@@ -114,11 +152,17 @@ public class FragMentContainer extends AppCompatActivity implements NavigationVi
             toolbar.setTitle("Trang chủ(admin)");
             getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer, new TrangChuAdmin()).addToBackStack(null).commit();
         }
+        else if (item.getItemId()==R.id.thongTin) {
+            setTitle("Thông tin ");
+            toolbar.setTitle("Thông tin cá nhân");
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer, new Frag_Info()).addToBackStack(null).commit();
+        }
         else if (item.getItemId()==R.id.manChinhUser) {
             setTitle("Màn hình chính");
             toolbar.setTitle("Trang chủ(user)");
             getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer, new TrangChuNguoiDung()).addToBackStack(null).commit();
-        }else if (item.getItemId()==R.id.QLSP) {
+        }
+        else if (item.getItemId()==R.id.QLSP) {
             setTitle("Quản lí sản phẩm");
             toolbar.setTitle("Quản lí sản phẩm");
             getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer, new Frag_QuanLiSanPham()).addToBackStack(null).commit();
@@ -127,10 +171,15 @@ public class FragMentContainer extends AppCompatActivity implements NavigationVi
             setTitle("Quản lí Voucher");
             toolbar.setTitle("Quản lí Voucher");
             getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer, new Frag_QuanLiVoucher()).addToBackStack(null).commit();
-        }else if (item.getItemId()==R.id.QLHD) {
-            setTitle("Quản lí Hóa đơn");
-            toolbar.setTitle("Quản lí Hóa đơn");
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer, new Frag_QuanLiHoaDon()).addToBackStack(null).commit();
+        }else if (item.getItemId()==R.id.dsVoucher) {
+            setTitle("Danh sách voucher Voucher");
+            toolbar.setTitle("Danh sách Voucher");
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer, new Frag_DanhSachVoucher()).addToBackStack(null).commit();
+        }
+        else if (item.getItemId()==R.id.QLHD) {
+            setTitle("Quản lí đơn hàng");
+            toolbar.setTitle("Quản lí đơn hàng");
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer, new Frag_QuanLiDonHang()).addToBackStack(null).commit();
         }else if (item.getItemId()==R.id.QLKH) {
             setTitle("Quản lí khách hàng");
             toolbar.setTitle("Quản lí khách hàng");
@@ -159,6 +208,10 @@ public class FragMentContainer extends AppCompatActivity implements NavigationVi
             setTitle("Đơn mua gần đây");
             toolbar.setTitle("Đơn mua gần đây");
             getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer,new Frag_DonMua()).addToBackStack(null).commit();
+        }else if (item.getItemId()==R.id.dsSanPham) {
+            setTitle("Đơn mua gần đây");
+            toolbar.setTitle("Đơn mua gần đây");
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragMentContainer,new Frag_DanhSachSP()).addToBackStack(null).commit();
         }
         drawer.close();
         return false;

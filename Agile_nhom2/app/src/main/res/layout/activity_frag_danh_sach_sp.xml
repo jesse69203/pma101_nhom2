@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="65dp"
+    tools:context=".Frag_QuanLiSanPham">
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="15dp"
+        android:layout_marginTop="15dp"
+        android:id="@+id/linear_qlsp"
+        android:weightSum="3"
+        >
+        <EditText
+            android:id="@+id/edt_search_qlsp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="2.5"
+
+
+            android:background="@drawable/khugn_search"
+
+            android:paddingHorizontal="5dp"
+            android:hint="Tìm kiếm"
+
+            />
+        <ImageView
+            android:id="@+id/btntimkiem"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="0.5"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/khugn_search"
+
+
+            android:src="@drawable/baseline_search_24" />
+
+
+    </LinearLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linear_qlsp"
+        android:id="@+id/swipeRefreshLayout"
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleViewSanPham"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+</RelativeLayout>
