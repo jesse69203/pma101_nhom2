@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -34,14 +35,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.du_an1_qldt.Adapter.OrderAdapter;
 import com.example.du_an1_qldt.Adapter.SanPhamAdapter;
+import com.example.du_an1_qldt.DAO.OrderDAO;
 import com.example.du_an1_qldt.DAO.OrderDetailDao;
 import com.example.du_an1_qldt.DAO.SanPhamDAO;
 import com.example.du_an1_qldt.DataBase1.dbHelper;
+import com.example.du_an1_qldt.model.Order;
 import com.example.du_an1_qldt.model.phone;
 
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TrangChuAdmin extends Fragment {
     ViewPager viewPager;
@@ -54,7 +62,13 @@ public class TrangChuAdmin extends Fragment {
     ArrayList<phone> listSP;
     Spinner spn_hangDT;
     dbHelper myDbHelper;
+    ArrayList<Order> Listorders0;
+    ArrayList<Order> Listorders1;
+    ArrayList<Order> Listorders2;
+    OrderAdapter orderAdapter;
+    OrderDAO orderDAO;
 
+    Toolbar toolbar;
     FragMentContainer fragMentContainer;
 
     Frag_DanhSachVoucher fragDanhSachVoucher;
@@ -89,15 +103,51 @@ public class TrangChuAdmin extends Fragment {
         CardView cardView = view.findViewById(R.id.cardViewTrangChu);
         orderDetailDao = new OrderDetailDao(getActivity());
         cardView.setCardBackgroundColor(Color.WHITE);
+
         cardView.setRadius(20);
         Button incon_themSP = view.findViewById(R.id.incon_themSP);
         Button icon_dsVoucher = view.findViewById(R.id.icon_dsVoucher);
         Button icon_dsSP = view.findViewById(R.id.icon_dsSP);
         Button icon_thongKe = view.findViewById(R.id.icon_thongKe);
         Button icon_donhang = view.findViewById(R.id.icon_donhang);
+        Button icon_qlsp = view.findViewById(R.id.icon_qlsp);
+        Button icon_qlVoucher = view.findViewById(R.id.icon_qlVoucher);
         TextView doanhthungay = view.findViewById(R.id.doanhthungay);
         TextView mo_rong1 = view.findViewById(R.id.mo_rong1);
-        doanhthungay.setText(String.valueOf((int) orderDetailDao.getTotalPriceForDay())+" VNĐ");
+        TextView donhang_admin = view.findViewById(R.id.donhang_admin);
+        TextView donhuy_admin = view.findViewById(R.id.donhuy_admin);
+        TextView donXN = view.findViewById(R.id.donXN_admin);
+
+        TextView donhang_admin1 = view.findViewById(R.id.donhang_admin1);
+        TextView donhuy_admin1 = view.findViewById(R.id.donhuy_admin1);
+        TextView donXN1 = view.findViewById(R.id.donXN_admin1);
+
+        TextView mo_rong2 = view.findViewById(R.id.mo_rong2);
+
+        TextView mo_rong3 = view.findViewById(R.id.mo_rong3);
+
+
+        orderDAO=new OrderDAO(getActivity());
+        Listorders2 = orderDAO.getOrdersByStatus(2);
+        donhuy_admin.setText(Listorders2.size()+"");
+        donhuy_admin1.setText(Listorders2.size()+"");
+        Listorders0 = orderDAO.getOrdersByStatus(0);
+        donhang_admin.setText(Listorders0.size()+"");
+        donhang_admin1.setText(Listorders0.size()+"");
+
+
+        Listorders1 = orderDAO.getOrdersByStatus(1);
+        donXN.setText(Listorders1.size()+"");
+        donXN1.setText(Listorders1.size()+"");
+
+
+
+
+        double sum = orderDetailDao.getTotalRevenueForCurrentDate();
+
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        String formattedRevenueDay = currencyFormat.format(sum);
+        doanhthungay.setText(formattedRevenueDay+" VNĐ");
 
 
 
@@ -109,12 +159,60 @@ public class TrangChuAdmin extends Fragment {
         handler.postDelayed(runnable, SLIDE_DELAY);
         myDbHelper = new dbHelper(getActivity());
 
+
+
+        mo_rong3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Frag_QuanLiDonHang fragQuanLiDonHang = new Frag_QuanLiDonHang();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragMentContainer, fragQuanLiDonHang);
+                transaction.addToBackStack(null);
+
+                transaction.commit();
+            }
+        });
+
+        mo_rong2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Frag_QuanLiDonHang fragQuanLiDonHang = new Frag_QuanLiDonHang();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragMentContainer, fragQuanLiDonHang);
+                transaction.addToBackStack(null);
+
+                transaction.commit();
+            }
+        });
         mo_rong1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Frag_QuanLiDonHang fragQuanLiDonHang = new Frag_QuanLiDonHang();
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragMentContainer, fragQuanLiDonHang);
+                transaction.addToBackStack(null);
+
+                transaction.commit();
+            }
+        });
+
+        icon_qlVoucher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Frag_QuanLiVoucher fragQuanLiVouchcer = new Frag_QuanLiVoucher();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragMentContainer, fragQuanLiVouchcer);
+                transaction.addToBackStack(null);
+
+                transaction.commit();
+            }
+        });
+        icon_qlsp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Frag_QuanLiSanPham fragQuanLiSP = new Frag_QuanLiSanPham();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragMentContainer, fragQuanLiSP);
                 transaction.addToBackStack(null);
 
                 transaction.commit();
@@ -148,9 +246,9 @@ public class TrangChuAdmin extends Fragment {
         icon_dsSP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Frag_QuanLiDonHang fragQuanLiHoaDon = new Frag_QuanLiDonHang();
+                Frag_DanhSachSP fragDSSP = new Frag_DanhSachSP();
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragMentContainer, fragQuanLiHoaDon);
+                transaction.replace(R.id.fragMentContainer, fragDSSP);
                 transaction.addToBackStack(null);
 
                 transaction.commit();

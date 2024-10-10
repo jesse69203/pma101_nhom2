@@ -60,11 +60,12 @@ int quantity;
         quantity= cart.getPrice();
         format=new DecimalFormat("#,###,###");
         String quantityPr=format.format(quantity);
-        holder.tvPrice.setText(quantityPr); // Chuyển int thành chuỗi
+        holder.tvPrice.setText(quantityPr+"VND"); // Chuyển int thành chuỗi
         holder.tvRom.setText(String.valueOf(cart.getRom())+"gb"); // Chuyển int thành chuỗi
         holder.tvColor.setText(cart.getColor());
         holder.tvQuantity.setText(String.valueOf(1));
         cartDao= new CartDao(context);
+        cartDao.updateCartItemQuantity(cart.getId(),sl);
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +97,7 @@ int quantity;
                 String doublePrice = formatter.format(price);
                 holder.tvQuantity.setText(String.valueOf(sl)); // Cập nhật số lượng hiển thị
                 cartDao.updateCartItemQuantity(cart.getId(),sl);
-                holder.tvPrice.setText(String.valueOf(doublePrice)); // Cập nhật giá hiển thị
+                holder.tvPrice.setText(String.valueOf(doublePrice)+"VND"); // Cập nhật giá hiển thị
                 cart.setQuantity(sl); // Cập nhật số lượng trong đối tượng Cart
                 if (totalPriceListener != null) {
                     totalPriceListener.onTotalPriceChanged(calculateTotalPrice()); // calculateTotalPrice() là phương thức tính tổng giá trị trong giỏ hàng
@@ -115,7 +116,7 @@ int quantity;
                     String doublePrice = formatter.format(price);
                     holder.tvQuantity.setText(String.valueOf(sl)); // Cập nhật số lượng hiển thị
                     cartDao.updateCartItemQuantity(cart.getId(),sl);
-                    holder.tvPrice.setText(String.valueOf(doublePrice)); // Cập nhật giá hiển thị
+                    holder.tvPrice.setText(String.valueOf(doublePrice)+"VND"); // Cập nhật giá hiển thị
                     cart.setQuantity(sl); // Cập nhật số lượng trong đối tượng Cart
                     if (totalPriceListener != null) {
                         totalPriceListener.onTotalPriceChanged(calculateTotalPrice());
@@ -150,8 +151,8 @@ int quantity;
         }
 
     }
-    private double calculateTotalPrice() {
-        double totalPrice = 0.0;
+    private int calculateTotalPrice() {
+        int totalPrice = 0;
         for (Cart cartItem : list) {
             totalPrice += cartItem.getPrice() * cartItem.getQuantity();// Giả sử bạn có phương thức getPrice() và getQuantity() trong class Cart
         }

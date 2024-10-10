@@ -16,6 +16,18 @@
         android:theme="@style/Theme.Du_an1_QLDT"
         tools:targetApi="31">
         <activity
+            android:name=".Frag_XemDonHangByDate"
+            android:exported="false" />
+        <activity
+            android:name=".tabLayout_order3"
+            android:exported="false" />
+        <activity
+            android:name=".tabLayout_order2"
+            android:exported="false" />
+        <activity
+            android:name=".tabLayout_order1"
+            android:exported="false" />
+        <activity
             android:name=".OrderDetailView"
             android:exported="false" />
         <activity
@@ -85,10 +97,10 @@
             android:name=".Frag_QuanLiHangDT"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".DangNhap"
             android:exported="false" />
         <activity
-            android:name=".DangNhap"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

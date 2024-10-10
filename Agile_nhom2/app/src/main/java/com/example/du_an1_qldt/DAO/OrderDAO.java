@@ -1,5 +1,6 @@
 package com.example.du_an1_qldt.DAO;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,6 +12,7 @@ import com.example.du_an1_qldt.model.OrderDetail;
 import com.example.du_an1_qldt.model.phone;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderDAO {
     private SQLiteDatabase db;
@@ -24,22 +26,47 @@ public class OrderDAO {
 
     }
 
-    public ArrayList<Order> getlistOrder() {
-        ArrayList<Order> list = new ArrayList<>();
-        Cursor c = db.rawQuery("select * from Oder", null, null);
-        if (c.getCount() > 0) {
-            c.moveToFirst();
-            do {
-                Order order = new Order();
-                order.setIdUser(c.getInt(1));
-                order.setId(c.getInt(0));
-                order.setDateOrder(c.getString(2));
-                order.setStatusOrder(c.getInt(3));
-                list.add(order);
-            } while (c.moveToNext());
+    public ArrayList<Order> getOrdersByStatus(int status) {
+        ArrayList<Order> orders = new ArrayList<>();
+        SQLiteDatabase db = myDbHelper.getReadableDatabase();
+        Cursor cursor = db.query("Oder", null, "status=?", new String[]{String.valueOf(status)}, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    Order order = new Order();
+                    order.setIdUser(cursor.getInt(1));
+                    order.setId(cursor.getInt(0));
+                    order.setDateOrder(cursor.getString(2));
+                    order.setStatusOrder(cursor.getInt(3));
+                    orders.add(order);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
         }
-        return list;
+        db.close();
+        return orders;
     }
+    public ArrayList<Order> getOrdersByStatus1(int status,String start, String end ) {
+        ArrayList<Order> orders = new ArrayList<>();
+        SQLiteDatabase db = myDbHelper.getReadableDatabase();
+        Cursor cursor = db.query("Oder", null, "status=?", new String[]{String.valueOf(status)}, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    Order order = new Order();
+                    order.setIdUser(cursor.getInt(1));
+                    order.setId(cursor.getInt(0));
+                    order.setDateOrder(cursor.getString(2));
+                    order.setStatusOrder(cursor.getInt(3));
+                    orders.add(order);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        db.close();
+        return orders;
+    }
+
 
     public int createOrder(Order order) {
         ContentValues values = new ContentValues();
@@ -64,7 +91,7 @@ public class OrderDAO {
     public int createOrderDetail(OrderDetail order) {
         ContentValues values = new ContentValues();
         values.put("idSp", order.getIdProduct());
-        values.put("idDonHang", order.getId());
+        values.put("idDonHang", order.getIdDonHang());
         values.put("soLuong", order.getQuantity());
         values.put("giaTien", order.getPrice());
 
@@ -91,7 +118,7 @@ public class OrderDAO {
 
     public ArrayList<OrderDetail> getlistOrderDetail(int orderId) {
         ArrayList<OrderDetail> list = new ArrayList<>();
-        Cursor c = db.rawQuery("select * from OderDetail where id=?", new String[]{String.valueOf(orderId)});
+        Cursor c = db.query("OderDetail", null, "idDonHang=?", new String[]{String.valueOf(orderId)}, null, null, null);
         if (c.getCount() > 0) {
             c.moveToFirst();
             do {
@@ -103,25 +130,14 @@ public class OrderDAO {
                 order.setPrice(c.getInt(4));
                 list.add(order);
             } while (c.moveToNext());
-
-
-//            String db_order_detail = "CREATE TABLE OderDetail (" +
-//                    "id integer PRIMARY KEY AUTOINCREMENT, " +
-//                    "idSp integer NOT NULL, " +
-//                    "idDonHang integer NOT NULL, " +
-//                    "soLuong integer NOT NULL," +
-//                    "giaTien integer NOT NULL," +
-//                    "FOREIGN KEY (idSp) REFERENCES Phone(maDt)," +
-//                    "FOREIGN KEY (idDonHang) REFERENCES Oder(id))";
-//            sqLiteDatabase.execSQL(db_order_detail);
         }
         return list;
     }
 
-    public ArrayList<Order> getConfirmedOrders() {
+    public ArrayList<Order> getConfirmedOrders(int idUser) {
         ArrayList<Order> confirmedOrders = new ArrayList<>();
         SQLiteDatabase db = myDbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Oder WHERE status = 1", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM Oder WHERE status = 1 AND idUser = ?",  new String[]{String.valueOf(idUser)});
         if (cursor.moveToFirst()) {
             do {
                 Order order = new Order();
@@ -134,4 +150,28 @@ public class OrderDAO {
         }
         return confirmedOrders;
     }
+    @SuppressLint("Range")
+    public ArrayList<Order> getOrdersWithStatusAndDateBetween(String startDate, String endDate) {
+        ArrayList<Order> orders = new ArrayList<>();
+
+        // Truy vấn lấy danh sách đơn hàng có trạng thái bằng 1 và ngày nằm trong khoảng StartDate và EndDate
+        String query = "SELECT * FROM Oder AS dh "
+                + "JOIN OderDetail AS dhct ON dh.id = dhct.idDonHang WHERE dh.status = 1 "
+                + "AND dh.date BETWEEN '" + startDate + "' AND '" + endDate + "'";
+
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            // Lấy thông tin của đơn hàng từ Cursor và thêm vào danh sách
+            Order order = new Order();
+            order.setId(cursor.getInt(cursor.getColumnIndex("id")));
+            order.setStatusOrder(cursor.getInt(cursor.getColumnIndex("status")));
+            order.setDateOrder(cursor.getString(cursor.getColumnIndex("date")));
+            // Thêm thông tin khác của đơn hàng nếu cần
+            orders.add(order);
+        }
+        cursor.close();
+
+        return orders;
+    }
+
 }

@@ -35,7 +35,9 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="30dp"
         android:orientation="vertical"
+
         android:layout_gravity="center"
+
 
         app:cardCornerRadius="30dp"
         app:cardElevation="8dp">
@@ -88,6 +90,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="22sp"
+                        android:id="@+id/donhang_admin"
                         android:layout_gravity="center"
                         android:text="0"/>
                 </LinearLayout>
@@ -108,6 +111,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="22sp"
+                        android:id="@+id/donhuy_admin"
                         android:layout_gravity="center"
                         android:text="0"/>
                 </LinearLayout>
@@ -121,13 +125,14 @@
                         android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Đơn hàng trả"/>
+                        android:text="ĐH đã xác nhận"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="22sp"
+                        android:id="@+id/donXN_admin"
                         android:layout_gravity="center"
                         android:text="0"/>
 
@@ -156,12 +161,12 @@
         android:weightSum="4"
         android:orientation="horizontal">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
-            <TextView
+            <Button
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/icon_donhang"
@@ -170,19 +175,21 @@
                 android:paddingLeft="12dp"
                 />
             <TextView
+                android:textSize="13dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đơn hàng"
+                android:text="Các Đơn hàng"
                 />
 
 
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_weight="1"
             android:gravity="center"
+
             android:orientation="vertical">
 
             <Button
@@ -196,20 +203,23 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="12dp"
                 android:text="DS sản phẩm" />
 
 
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_weight="1"
             android:gravity="center"
+
             android:orientation="vertical">
-            <TextView
+            <Button
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:id="@+id/icon_qlsp"
                 android:background="@drawable/khung_tron"
                 android:drawableLeft="@drawable/icon_them"
                 android:paddingLeft="12dp"
@@ -217,14 +227,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lịch sử ĐH"
+                android:text="QL sản phẩm"
                 />
 
 
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -241,7 +251,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:text="Thêm sản phẩm"
+                android:text="Thêm SP"
                 />
 
 
@@ -261,7 +271,7 @@
         android:weightSum="4"
         android:orientation="horizontal">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -284,7 +294,7 @@
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -309,31 +319,33 @@
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="80dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:gravity="center"
+
             android:orientation="vertical">
-            <TextView
+            <Button
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/khung_tron"
+                android:id="@+id/icon_qlVoucher"
                 android:drawableLeft="@drawable/icon_them"
                 android:paddingLeft="12dp"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chờ Xác nhận"
+                android:text="QL Voucher"
                 />
 
 
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="80dp"
-            android:layout_weight="1.5"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
             <TextView
@@ -402,7 +414,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="4"
+            android:weightSum="3"
             android:paddingHorizontal="10dp"
             >
             <LinearLayout
@@ -413,7 +425,7 @@
 
                 <ImageView
                     android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_height="80dp"
                     android:layout_gravity="center"
                     android:src="@drawable/cart"
                     />
@@ -423,6 +435,7 @@
                     android:text="Chờ duyệt"
                     android:textColor="@color/black"
                     android:textStyle="bold"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:layout_marginLeft="10dp"
                     android:textSize="16sp"
@@ -432,30 +445,35 @@
                     android:layout_height="80dp">
 
                     <TextView
+                        android:id="@+id/donhang_admin1"
                         android:layout_width="wrap_content"
                         android:layout_height="80dp"
-
+                        android:layout_marginTop="10dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="51dp"
                         android:gravity="center"
                         android:text="0"
                         android:textColor="@color/black"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="50dp"
 
                         android:textSize="22sp"
                         android:textStyle="bold" />
+
                     <TextView
+                        android:id="@+id/mo_rong1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:background="@drawable/arrow"
-                        android:id="@+id/mo_rong1"
+                        android:layout_alignLeft="@+id/donhang_admin1"
                         android:layout_alignParentRight="true"
-                        android:layout_marginLeft="10dp"
 
-                        android:textSize="22sp"/>
+
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginRight="-3dp"
+                        android:background="@drawable/arrow"
+                        android:textColor="@color/black"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
 
 
                 </RelativeLayout>
@@ -475,10 +493,12 @@
                     />
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:text="Chờ thanh toán"
+                    android:layout_height="70dp"
+                    android:text="Đã duyệt"
+                    android:layout_marginTop="10dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
+
                     android:gravity="center"
                     android:layout_marginLeft="10dp"
                     android:textSize="16sp"
@@ -492,11 +512,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="80dp"
-
-
+                        android:id="@+id/donXN_admin1"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="50dp"
                         android:gravity="center"
+                        android:layout_marginTop="10dp"
                         android:text="0"
                         android:textColor="@color/black"
 
@@ -510,6 +530,8 @@
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:gravity="center"
+
+                        android:layout_marginTop="25dp"
                         android:background="@drawable/arrow"
                         android:id="@+id/mo_rong2"
                         android:layout_alignParentRight="true"
@@ -535,9 +557,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="80dp"
-                    android:text="Đang vận chuyển"
+                    android:text="Đã hủy"
                     android:textColor="@color/black"
                     android:textStyle="bold"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:layout_marginLeft="10dp"
                     android:textSize="16sp"
@@ -553,9 +576,9 @@
                         android:layout_marginRight="50dp"
                         android:gravity="center"
                         android:text="0"
+                        android:layout_marginTop="10dp"
                         android:textColor="@color/black"
-
-
+                        android:id="@+id/donhuy_admin1"
                         android:textSize="22sp"
                         android:textStyle="bold" />
                     <TextView
@@ -567,6 +590,7 @@
                         android:gravity="center"
                         android:background="@drawable/arrow"
                         android:id="@+id/mo_rong3"
+                        android:layout_marginTop="20dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginLeft="10dp"
                         android:textSize="22sp"/>
@@ -575,61 +599,7 @@
                 </RelativeLayout>
 
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="1">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/cart"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:text="Đã vận chuyển"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="16sp"
-                    />
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="80dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="50dp"
-                        android:gravity="center"
-                        android:text="0"
-                        android:textColor="@color/black"
-
-
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:background="@drawable/arrow"
-                        android:id="@+id/mo_rong4"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="22sp"/>
-
-
-                </RelativeLayout>
-
-            </LinearLayout>
 
 
         </LinearLayout>
@@ -637,11 +607,7 @@
 
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/black"
-        />
+
 </LinearLayout>
     </RelativeLayout>
 </ScrollView>

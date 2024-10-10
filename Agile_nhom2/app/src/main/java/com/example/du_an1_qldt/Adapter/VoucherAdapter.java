@@ -23,9 +23,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.du_an1_qldt.DAO.OrderDAO;
 import com.example.du_an1_qldt.DAO.SanPhamDAO;
 import com.example.du_an1_qldt.DAO.VoucherDAO;
 import com.example.du_an1_qldt.R;
+import com.example.du_an1_qldt.model.OrderDetail;
 import com.example.du_an1_qldt.model.Voucher_DTO;
 import com.example.du_an1_qldt.model.phone;
 
@@ -35,6 +37,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
 
     Context context;
     ArrayList<Voucher_DTO> listVoucher;
+    OrderDAO orderDAO;
     VoucherAdapter voucherAdapter;
     public VoucherAdapter(Context context, ArrayList<Voucher_DTO> listVoucher) {
         this.context = context;
@@ -53,22 +56,35 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
     public void onBindViewHolder(@NonNull VoucherAdapter.VoucherViewHolder holder, @SuppressLint("RecyclerView") int position) {
         VoucherDAO voucherDAO = new VoucherDAO(context);
         listVoucher = voucherDAO.getListVoucher();
+        orderDAO = new OrderDAO(context);
         Voucher_DTO voucherDto = listVoucher.get(position);
         holder.tenVoucher.setText(voucherDto.getTenVoucher());
         holder.maVoucher.setText(voucherDto.getId()+"");
         holder.trangThai.setText(voucherDto.getTrangThai()+"");
-        holder.soLuong.setText(voucherDto.getSoLuong()+"");
-        if (voucherDto.getTrangThai()==1){
+
+        if (voucherDto.getSoLuong()<0){
+            holder.soLuong.setText("0");
+            voucherDto.setGiaTriGiam(0);
+            voucherDto.setTrangThai(0);
+        }else {
+            holder.soLuong.setText(voucherDto.getSoLuong()+"");
+        }
+
+
+        if (voucherDto.getSoLuong()>0){
             holder.trangThai.setText("Còn voucher");
+            holder.giaTriGiam.setText(voucherDto.getGiaTriGiam()+" %");
         }else {
             holder.trangThai.setText("Hết voucher");
+
+            holder.giaTriGiam.setText(voucherDto.getGiaTriGiam()+" %");
         }
-        holder.giaTriGiam.setText(voucherDto.getGiaTriGiam()+"");
 
 
-        holder.cardViewVoucher.setCardBackgroundColor(Color.WHITE);
-        holder.cardViewVoucher.setRadius(70);
-        holder.cardViewVoucher.setCardElevation(8);
+//
+//        holder.cardViewVoucher.setCardBackgroundColor(Color.WHITE);
+//        holder.cardViewVoucher.setRadius(70);
+//        holder.cardViewVoucher.setCardElevation(8);
 
         holder.select_row_qlvoucher.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -90,8 +106,16 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
                             Button sua = v1.findViewById(R.id.btn_suaVoucher_sua);
 
                             tenVoucher.setText(voucherDto.getTenVoucher());
-                            soLuong.setText(voucherDto.getSoLuong()+"");
-                            menhgia.setText(voucherDto.getGiaTriGiam()+"");
+
+                            if (voucherDto.getSoLuong()<=0){
+                                menhgia.setText("0");
+                                soLuong.setText("0");
+                            }else
+                            {
+                                menhgia.setText(voucherDto.getGiaTriGiam()+"");
+                                soLuong.setText(voucherDto.getSoLuong()+"");
+                            }
+
 
 
                             listVoucher =voucherDAO.getListVoucher();
@@ -198,8 +222,25 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.VoucherV
             trangThai = itemView.findViewById(R.id.tv_trangthaiVoucher);
             soLuong = itemView.findViewById(R.id.tv_soLuongVoucher);
             giaTriGiam = itemView.findViewById(R.id.tv_menhGiaVoucher);
-            cardViewVoucher =itemView.findViewById(R.id.cardViewVoucher_ql);
+//            cardViewVoucher =itemView.findViewById(R.id.cardViewVoucher_ql);
             select_row_qlvoucher = itemView.findViewById(R.id.select_row_qlvoucher);
         }
     }
+//    private void updateVoucherQuantities(int orderId) {
+//        VoucherDAO voucherDAO= new VoucherDAO(context);
+//        // Lấy danh sách sản phẩm trong đơn hàng từ cơ sở dữ liệu
+//        ArrayList<Voucher_DTO> voucher_DTO = voucherDAO.getListVoucher();
+//
+//        for (Voucher_DTO voucher_dto : voucher_DTO) {
+//            // Lấy số lượng sản phẩm hiện tại từ cơ sở dữ liệu
+//            int currentQuantity = voucherDAO.getVoucherQuantityFromDatabase(voucher_dto.getId());
+//
+//            // Tính toán số lượng mới (ví dụ: giảm số lượng bằng số lượng trong đơn hàng)
+//            int updatedQuantity = currentQuantity - 1;
+//
+//            // Cập nhật số lượng sản phẩm mới vào cơ sở dữ liệu
+//            voucherDAO.updateProductQuantityInDatabase(voucher_dto.getId(), updatedQuantity);
+//        }
+//    }
+
 }

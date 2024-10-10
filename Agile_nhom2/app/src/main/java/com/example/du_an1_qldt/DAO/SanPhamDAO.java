@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.du_an1_qldt.DataBase1.dbHelper;
 import com.example.du_an1_qldt.model.phone;
@@ -186,7 +187,8 @@ public class SanPhamDAO {
                 null, null, null, null);
         int quantity = 0;
         if (cursor != null && cursor.moveToFirst()) {
-            quantity = cursor.getInt(8);
+            // Lấy giá trị của cột "soluong"
+            quantity = cursor.getInt(0);
             cursor.close();
         }
         return quantity;
@@ -197,9 +199,37 @@ public class SanPhamDAO {
         SQLiteDatabase db = myDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("soluong", updatedQuantity);
-        db.update("Phone", values, "maDt=?",
+        int rowsAffected = db.update("Phone", values, "maDt=?",
                 new String[]{String.valueOf(productId)});
         db.close();
-    }
 
+        if (rowsAffected == 0) {
+            // Không có sản phẩm nào được cập nhật, có thể có lỗi xảy ra
+            Log.e("UpdateProductQuantity", "No rows affected! Product ID: " + productId);
+        } else {
+            Log.d("UpdateProductQuantity", rowsAffected + " rows affected.");
+        }
+    }
+    public phone getProductById(int idPr){
+        phone phone1= null;
+
+        Cursor c = db.query("Phone", null, "maDt = ?", new String[]{String.valueOf(idPr)}, null, null, null);
+        if (c.getCount()>0){
+            c.moveToFirst();
+            if (c != null && c.moveToFirst()){
+              int id=c.getInt(0);
+              String color=c.getString(6);
+              String name=c.getString(1);
+              int idBrand=c.getInt(2);
+              int price=c.getInt(3);
+              int image=c.getInt(4);
+              int rom=c.getInt(5);
+              int status=c.getInt(7);
+              int quantity=c.getInt(8);
+              phone1= new phone(id,name,color,image,rom,price,quantity,idBrand,status);
+                c.close();
+            }
+        }
+        return phone1;
+    }
 }

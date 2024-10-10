@@ -25,7 +25,9 @@ import com.example.du_an1_qldt.TrangChuNguoiDung;
 import com.example.du_an1_qldt.model.Cart;
 import com.example.du_an1_qldt.model.phone;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class DSSP_Adapter extends RecyclerView.Adapter<DSSP_Adapter.ViewHolder_DSSP> {
 
@@ -58,9 +60,16 @@ public class DSSP_Adapter extends RecyclerView.Adapter<DSSP_Adapter.ViewHolder_D
 
         phone dt = listSP.get(position);
         holder.tv_tenSP1.setText(String.valueOf(dt.getName()));
-        holder.tv_giaSPham.setText(String.valueOf(dt.getGia()));
-        holder.tv_TrangthaiSP1.setText(dt.getSoLuong()>0?"Còn hàng":"Hết Hàng");
+        double sum = dt.getGia();
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        String formattedRevenueDay = currencyFormat.format(sum);
+        holder.tv_giaSPham.setText(formattedRevenueDay+"");
 
+        if (dt.getSoLuong()>0){
+            holder.tv_TrangthaiSP1.setText("Còn hàng");
+        }else {
+            holder.tv_TrangthaiSP1.setText("Hết hàng");
+        }
         holder.tv_mauSac.setText(String.valueOf(dt.getColor()));
         holder.tv_romSP.setText("Rom:" + String.valueOf(dt.getRom()));
 
@@ -116,11 +125,6 @@ public class DSSP_Adapter extends RecyclerView.Adapter<DSSP_Adapter.ViewHolder_D
 
         phone phoneDTO = listSP.get(position);
 
-        if (phoneDTO.getStatus() == 1) {
-            holder.tv_TrangthaiSP1.setText("Còn hàng");
-        } else {
-            holder.tv_TrangthaiSP1.setText("Hết hàng");
-        }
 
     }
 
@@ -131,8 +135,8 @@ public class DSSP_Adapter extends RecyclerView.Adapter<DSSP_Adapter.ViewHolder_D
     }
 
     public class ViewHolder_DSSP extends RecyclerView.ViewHolder {
-        TextView tv_tenSP1, tv_giaSPham, tv_TrangthaiSP1,tv_mauSac,tv_romSP;
-        ImageView anh1, btnThemvaoGiohang, btnMuaNgay;
+        TextView tv_tenSP1, tv_giaSPham, tv_TrangthaiSP1,tv_mauSac,tv_romSP,btnThemvaoGiohang,btnMuaNgay;
+        ImageView anh1 ;
 
         public ViewHolder_DSSP(@NonNull View itemView) {
             super(itemView);
@@ -143,7 +147,6 @@ public class DSSP_Adapter extends RecyclerView.Adapter<DSSP_Adapter.ViewHolder_D
             anh1 = itemView.findViewById(R.id.anh11);
             tv_mauSac = itemView.findViewById(R.id.tv_mauSac);
             tv_romSP = itemView.findViewById(R.id.tv_romSP);
-
             btnThemvaoGiohang = itemView.findViewById(R.id.btnThemvaoGiohang);
             btnMuaNgay = itemView.findViewById(R.id.btnMuaNgay);
 

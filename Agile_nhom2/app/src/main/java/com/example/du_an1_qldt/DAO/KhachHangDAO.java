@@ -148,14 +148,15 @@ public class KhachHangDAO {
     }
 
 
-    public boolean themkhachhang(String ten, String email, String pass) {
+    public boolean themkhachhang(String ten, String email, String pass,String sdt) {
         SQLiteDatabase sql = myDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put("username", ten);
         values.put("email", email);
         values.put("password", pass);
-
+        values.put("sodienthoai",sdt);
+        values.put("loaitaikhoan", "user");
         long check = sql.insert("nguoiDung", null, values);
 
         return check != -1;

@@ -20,7 +20,7 @@ import com.example.du_an1_qldt.DAO.KhachHangDAO;
 
 public class DangKy extends AppCompatActivity {
 
-    EditText edTendn, edEmail, edMatkhau, edNhaplaimk;
+    EditText edTendn, edEmail, edMatkhau, edNhaplaimk,edtSDT;
 
     Button btnDangky, btnTrolai;
 
@@ -40,6 +40,7 @@ public class DangKy extends AppCompatActivity {
         edNhaplaimk = findViewById(R.id.edNhaplaimk);
         btnDangky = findViewById(R.id.btnDangky);
         btnTrolai = findViewById(R.id.btnTrolai);
+        edtSDT = findViewById(R.id.edtSdt);
         khachHangDAO = new KhachHangDAO(getApplicationContext());
 
         btnTrolai.setOnClickListener(new View.OnClickListener() {
@@ -56,35 +57,40 @@ public class DangKy extends AppCompatActivity {
                 String email = edEmail.getText().toString();
                 String pass = edMatkhau.getText().toString();
                 String repass = edNhaplaimk.getText().toString();
+                String sdt = edtSDT.getText().toString();
 
                 String loaitaikhoan = "nguoiDung";
 
                 if (name.isEmpty() || email.isEmpty() || pass.isEmpty() || repass.isEmpty()) {
-                    snackBar(R.layout.custom_snackbar_error2, "Không được bỏ trống trường nào ");
+                    Toast.makeText(DangKy.this, "Không được bỏ trống trường nào", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (!checkEmail(email)) {
-                    snackBar(R.layout.custom_snackbar_error2, "Nhập sai cấu trúc email");
+                    Toast.makeText(DangKy.this, "Nhập sai cấu trúc email", Toast.LENGTH_SHORT).show();
+
                     return;
                 }
 
                 if (khachHangDAO.checkEmail(email) < 0) {
-                    snackBar(R.layout.custom_snackbar_error2, "Email đã tồn tại trên hệ thống");
+                    Toast.makeText(DangKy.this, "Email đã tồn tại trên hệ thống", Toast.LENGTH_SHORT).show();
+
                     return;
                 }
 
                 if (pass.length() < 8) {
-                    snackBar(R.layout.custom_snackbar_error2, "Mật khẩu phải có ít nhất 8 ký tự");
+                    Toast.makeText(DangKy.this, "Mật khẩu phải có ít nhất 8 ký tự", Toast.LENGTH_SHORT).show();
+
                     return;
                 }
 
                 if (!pass.equals(repass)) {
-                    snackBar(R.layout.custom_snackbar_error2, "Nhập lại mật khẩu không khớp");
+                    Toast.makeText(DangKy.this, "Nhập lại mật khẩu không khớp", Toast.LENGTH_SHORT).show();
+
                     return;
                 }
 
-                boolean check = khachHangDAO.themkhachhang(name, email, pass);
+                boolean check = khachHangDAO.themkhachhang(name, email, pass,sdt);
                 if (check) {
                     Toast.makeText(DangKy.this, "Thêm khách hàng thành công", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(DangKy.this, DangNhap.class);
